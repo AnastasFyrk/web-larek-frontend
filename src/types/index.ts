@@ -5,7 +5,7 @@ export interface ICard {
     image: string;
     title: string;
     category: string;
-    price: number;
+    price: number | null;
 }
 
 //список карточек на странице
@@ -37,4 +37,10 @@ export interface IFormOrderValidate {
 //Проверка валидации формы контактных данных
 export interface IFormUserValidate {
     checkValidation(data: Record<keyof IFormUser, string>): boolean;
+}
+
+//Информация о заказе
+export interface IOrder {
+    items: string[];
+    total: number;
 }
