@@ -1,17 +1,13 @@
 //карточка товара
 export interface ICard {
-    _id: string;
+    id: string;
     description: string;
     image: string;
     title: string;
     category: string;
     price: number | null;
-}
-
-//список карточек на странице
-export interface ICardList {
-    cards: ICard[];
-    preview: string | null;
+    buttonText?: string;
+    index: string;
 }
 
 //карточка в корзине
@@ -30,17 +26,19 @@ export interface IFormUser {
 }
 
 //Проверка валидации формы оплаты и адреса
-export interface IFormOrderValidate {
-    checkValidation(data: Record<keyof IFormOrder, string>): boolean;
-}
-
-//Проверка валидации формы контактных данных
-export interface IFormUserValidate {
-    checkValidation(data: Record<keyof IFormUser, string>): boolean;
-}
-
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
 //Информация о заказе
-export interface IOrder {
+export interface IOrder extends IFormOrder, IFormUser {
     items: string[];
     total: number;
+}
+
+export interface IOrderResult {
+    id: string;
+    items: string[];
+    total: number;
+}
+
+export interface IActions {
+    onClick : (event: MouseEvent)=> void;
 }

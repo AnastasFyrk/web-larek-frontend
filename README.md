@@ -60,15 +60,6 @@ export interface ICard {
 }
 ```
 
-#### Список карточек товара на странице
-
-```
-export interface ICardList {
-    cards: ICard[];
-    preview: string | null;
-}
-```
-
 #### Карточка товара в корзине
 
 ```
@@ -94,6 +85,10 @@ export interface IFormUser {
 ```
 
 #### Проверка валидации форм
+
+```
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+```
 
 ```
 export interface IFormOrderValidate {
@@ -181,6 +176,16 @@ export interface IOrder {
 - removeItemFromBasket - удаляет товар из корзины,
 - checkValidation - проверяет валидность форм.
 
+#### Класс ApiWebLarek
+
+Класс для работы с API WebLarek. Используется для получения данных с сервера. Наследует от `Api`.
+
+Методы:
+
+- `getCatalog` - получает каталог товаров с сервера,
+- `getCard` - получает информацию о карточке товара с сервера,
+- `postOrder` - отправляет заказ на сервер.
+
 ### Слой View
 
 #### Класс Page
@@ -189,14 +194,14 @@ export interface IOrder {
 
 Свойства:
 
-- \_catalog: HTMLElement - каталога товаров,
-- \_counter: HTMLElement - счетчик количества добавленных в корзину товаров,
-- \_basket: HTMLElement - корзина.
+- \_catalog: HTMLElement [] - каталога товаров,
+- \_counter: number - счетчик количества добавленных в корзину товаров,
+- \_locked: boolean - блокирует прокрутку страницы.
 
 Методы:
 
-- setCounter - устанавливает значение счетчика,
-- setCatalog - обновляет каталог,
+- counter - устанавливает значение счетчика,
+- catalog - обновляет каталог,
 - locked - блокирует прокрутку страницы.
 
 #### Класс Modal
@@ -214,6 +219,33 @@ export interface IOrder {
 - open - открытие модального окна,
 - close - закрытие модального окна,
 - render - отображение модального окна.
+
+#### Класс Card
+
+Класс реализует карточку товара. Наследует от `Component`.
+
+Свойства:
+
+- \_title: HTMLElement - заголовок карточки,
+- \_image: HTMLImageElement - изображение карточки,
+- \_price: HTMLElement - цена карточки,
+- \_button: HTMLElement - кнопка карточки,
+- \_buttonText: HTMLElement - текст кнопки карточки,
+- \_description: HTMLElement - описание карточки,
+- \_index: HTMLElement - идентификатор карточки,
+- \_category: HTMLElement - категория карточки.
+
+Методы:
+
+- set title - устанавливает заголовок карточки,
+- set image - устанавливает изображение карточки,
+- set price - устанавливает цену карточки,
+- buttonDisabled - устанавливает состояние кнопки карточки,
+- set buttonText - устанавливает текст кнопки карточки,
+- set description - устанавливает описание карточки,
+- set index - устанавливает идентификатор карточки,
+- set category - устанавливает категорию карточки,
+- set id - устанавливает идентификатор карточки.
 
 #### Класс Basket
 
@@ -241,8 +273,8 @@ export interface IOrder {
 
 Методы:
 
-- set Submit - включает и выключает кнопку подтверждения формы взависимости от валидации,
-- set Error - отображает ошибку валидации,
+- set valid - включает и выключает кнопку подтверждения формы взависимости от валидации,
+- set errors - отображает ошибку валидации,
 - render - отрисовывает форму.
 
 #### Класс FormPayment
@@ -256,7 +288,7 @@ export interface IOrder {
 
 Методы:
 
-- set payment - переключение кнопок способов оплаты,
+- toggleButton - переключение кнопок способов оплаты,
 - set address - устанавливает адрес доставки.
 
 #### Класс FormContact
@@ -285,9 +317,9 @@ export interface IOrder {
 События:
 
 - `product:change` - изменение массива товаров,
-- `basket:open` - открытие модального окна корзины,
+- `basket:open` - открытие модального окна корзины, 
 - `basket:change` - изменение товаров в корзине,
-- `basket:close` - закрытие модального окна корзины,
+- `preview:select` - превью выбранного товара,
 - `preview:change` - изменение модального окна превью товара,
 - `modal:open` - открытие модального окна,
 - `modal:close` - закрытие модального окна,
@@ -295,7 +327,7 @@ export interface IOrder {
 - `card:delete` - удаление карточки из корзины,
 - `order:submit` - сохранение данных о способе оплаты и адресе доставки,
 - `contacts:submit` - событие отправка товара на оплату,
-- `order:complete` - при открытии окна успешной оплаты,
+- `formErrors:change` - обновление ошибок валидации,
 - `order:validation` - валидации формы с вводом адреса и способа оплаты,
 - `contacts::validation` - валидации формы с контактными данными.
 
